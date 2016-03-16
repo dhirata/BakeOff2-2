@@ -70,9 +70,9 @@ void draw()
     text("Target:   " + currentPhrase, 70, 100); //draw the target string
     text("Entered:  " + currentTyped, 70, 140); //draw what the user has entered thus far 
     fill(255, 0, 0);
-    rect(800, 00, 200, 200); //drag next button
+    rect(350, 00, 150, 60); //drag next button
     fill(255);
-    text("NEXT > ", 850, 100); //draw next label
+    text("NEXT > ", 375, 40); //draw next label
 
 
     //my draw code
@@ -120,7 +120,7 @@ void mousePressed()
   }
 
   //You are allowed to have a next button outside the 2" area
-  if (didMouseClick(800, 00, 200, 200)) //check if click is in next button
+  if (didMouseClick(350, 00, 150, 60)) //check if click is in next button
   {
     nextTrial(); //if so, advance to next trial
   }
