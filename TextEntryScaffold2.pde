@@ -107,7 +107,7 @@ void draw()
     rect(margin + sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18);
 
     //Space key hitbox
-    rect(margin + 2 * sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6, sizeOfInputArea / 4, sizeOfInputArea * 5 / 18);
+    rect(margin + 2 * sizeOfInputArea * 3 / 8, margin + sizeOfInputArea * 5 / 18 + sizeOfInputArea / 6, sizeOfInputArea / 4, sizeOfInputArea * 5 / 18);
     
     //Delete key hitbox
     rect(margin + 2 * sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18, sizeOfInputArea / 4, sizeOfInputArea * 5 / 18);
@@ -125,7 +125,7 @@ void draw()
     rect(margin + 3, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + 3, sizeOfInputArea * 3 /8 - 6, sizeOfInputArea * 5 / 18 - 6, 7);
     rect(margin + sizeOfInputArea * 3 / 8 + 3, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + 3, sizeOfInputArea * 3 / 8 - 6, sizeOfInputArea * 5 / 18 - 6, 7);
     //space
-    rect(margin + 2 * sizeOfInputArea * 3 / 8 + 3, margin + sizeOfInputArea / 6 + 3, sizeOfInputArea / 4 - 6, sizeOfInputArea * 5 / 18 - 6, 7);
+    rect(margin + 2 * sizeOfInputArea * 3 / 8 + 3, margin + sizeOfInputArea / 6 + sizeOfInputArea * 5 / 18  + 3, sizeOfInputArea / 4 - 6, sizeOfInputArea * 5 / 18 - 6, 7);
     //delete
     rect(margin + 2 * sizeOfInputArea * 3 / 8 + 3, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + 3, sizeOfInputArea / 4 - 6, sizeOfInputArea * 5 / 18 - 6, 7);
     
@@ -140,9 +140,10 @@ void draw()
     text("GHJKL", margin + sizeOfInputArea * 3 / 8 + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6  + sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
     text("ZXCV", margin + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
     text("BNM", margin + sizeOfInputArea * 3 / 8 + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
-    text("_", margin + 2 * sizeOfInputArea * 3 / 8 + sizeOfInputArea / 4 / 2, margin + sizeOfInputArea / 6 + sizeOfInputArea * 1 / 5);
+    text("_", margin + 2 * sizeOfInputArea * 3 / 8 + sizeOfInputArea / 4 / 2, margin + sizeOfInputArea / 6 + sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
     text("<", margin + 2 * sizeOfInputArea * 3 / 8 + sizeOfInputArea / 4 / 2, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
     
+    System.out.println(currentMatches);
     
   }
   
@@ -208,7 +209,7 @@ void mousePressed()
     addLetter = true;
   }
   //Space Bar
-  if(didMouseClick(margin + 2 * sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6, sizeOfInputArea / 4, sizeOfInputArea * 5 / 18)) {
+  if(didMouseClick(margin + 2 * sizeOfInputArea * 3 / 8, margin + sizeOfInputArea * 5 / 18 + sizeOfInputArea / 6, sizeOfInputArea / 4, sizeOfInputArea * 5 / 18)) {
      currentTyped += ' '; 
      currentWord = "";
      lastSpace = currentTyped.length() - 1;
