@@ -1,8 +1,32 @@
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Queue;
-import java.util.LinkedList;
-import java.util.ArrayList;
+package processing.test.textentryscaffold2;
+
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import java.util.Arrays; 
+import java.util.Collections; 
+import java.util.Queue; 
+import java.util.LinkedList; 
+import java.util.ArrayList; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class TextEntryScaffold2 extends PApplet {
+
+
+
+
+
+
 
 String[] phrases; //contains all of the phrases
 int totalTrialNum = 4; //the total number of phrases to be tested - set this low for testing. Might be ~10 for the real bakeoff!
@@ -29,21 +53,18 @@ int lastSpace = 0;
 Trie t;
 int currentMatchLoc = 0;
 int optIndex = 0;
-PrintWriter output;
-String results = "";
 
 //You can modify anything in here. This is just a basic implementation.
-void setup()
+public void setup()
 {
   phrases = loadStrings("phrases2.txt"); //load the phrase set into memory
   Collections.shuffle(Arrays.asList(phrases)); //randomize the order of the phrases
     
   orientation(PORTRAIT); //can also be LANDSCAPE -- sets orientation on android device
-  size(1080, 1920); //Sets the size of the app. You may want to modify this to your device. Many phones today are 1080 wide by 1920 tall.
+   //Sets the size of the app. You may want to modify this to your device. Many phones today are 1080 wide by 1920 tall.
   textFont(createFont("Arial", 36)); //set the font to arial 24
   //noStroke(); //my code doesn't use any strokes.
   t = new Trie();
-  output = createWriter("outputs.txt");
   dictionary = loadStrings("dictionary.txt"); //load the dictionary set into memory
   for(int i = 0; i < dictionary.length; i++)
   {
@@ -52,7 +73,7 @@ void setup()
 }
 
 //You can modify anything in here. This is just a basic implementation.
-void draw()
+public void draw()
 {
   background(0); //clear background
 
@@ -65,22 +86,6 @@ void draw()
     fill(255);
     textAlign(CENTER);
     text("Finished", 280, 150);
-    //finishTime = millis();
-    //currTrialNum++;
-    text(results, 300, 900);
-    //if(currTrialNum == totalTrialNum-1) {
-    //text("==================", 300, 900);
-    //text("Trials complete!", 300, 940); //output
-    //text("Total time taken: " + (finishTime - startTime),300,980); //output
-    //text("Total letters entered: " + lettersEnteredTotal,300,1020); //output
-    //text("Total letters expected: " + lettersExpectedTotal,300,1060); //output
-    //text("Total errors entered: " + errorsTotal,300,1100); //output
-    //text("WPM: " + (lettersEnteredTotal/5.0f)/((finishTime - startTime)/60000f),300,1140); //output
-    //text("==================",300,1180);
-    //}
-    //output.flush();
-    //output.close();
-     //increment by one so this mesage only appears once when all trials are done
     return;
   }
 
@@ -172,7 +177,7 @@ void draw()
   
 }
 
-boolean didMouseClick(float x, float y, float w, float h) //simple function to do hit testing
+public boolean didMouseClick(float x, float y, float w, float h) //simple function to do hit testing
 {
   return (mouseX > x && mouseX<x+w && mouseY>y && mouseY<y+h); //check to see if it is in button bounds
 }
@@ -180,7 +185,7 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 //Put all algorithm stuff that should happen on click in here!!!
 //input string variable is called currentTyped
 //***************************************************************
-void mousePressed()
+public void mousePressed()
 {
   boolean addLetter = false;
   if(didMouseClick(margin, margin, sizeOfInputArea * 3 / 8, sizeOfInputArea / 3)) {
@@ -303,7 +308,7 @@ void mousePressed()
 }
 
 //THIS IS THE AUTOCOMPLETE STUFF
-ArrayList <String> checkWord(String currentWord)
+public ArrayList <String> checkWord(String currentWord)
 {
   currentWord = currentWord.trim();
   ArrayList <String> word = t.bfs_search(currentWord);
@@ -341,7 +346,7 @@ ArrayList <String> checkWord(String currentWord)
   }
 }
 
-String convertLetterstoNumbers(String word)
+public String convertLetterstoNumbers(String word)
 {
   String val = "";
   System.out.println(word);
@@ -353,7 +358,7 @@ String convertLetterstoNumbers(String word)
   return val; 
 }
 
-char convertCharacterToNum(char letter)
+public char convertCharacterToNum(char letter)
 {
   switch(letter)
   {
@@ -394,7 +399,7 @@ char convertCharacterToNum(char letter)
 }
 
 
-void nextTrial()
+public void nextTrial()
 {
   if (currTrialNum >= totalTrialNum) //check to see if experiment is done
     return; //if so, just return
@@ -402,15 +407,15 @@ void nextTrial()
     if (startTime!=0 && finishTime==0) //in the middle of trials
   {
     System.out.println("==================");
-    output.println("Phrase " + (currTrialNum+1) + " of " + totalTrialNum); //output
-    output.println("Target phrase: " + currentPhrase); //output
-    output.println("Phrase length: " + currentPhrase.length()); //output
-    output.println("User typed: " + currentTyped); //output
-    output.println("User typed length: " + currentTyped.length()); //output
-    output.println("Number of errors: " + computeLevenshteinDistance(currentTyped.trim(), currentPhrase.trim())); //trim whitespace and compute errors
-    output.println("Time taken on this trial: " + (millis()-lastTime)); //output
-    output.println("Time taken since beginning: " + (millis()-startTime)); //output
-    output.println("==================");
+    System.out.println("Phrase " + (currTrialNum+1) + " of " + totalTrialNum); //output
+    System.out.println("Target phrase: " + currentPhrase); //output
+    System.out.println("Phrase length: " + currentPhrase.length()); //output
+    System.out.println("User typed: " + currentTyped); //output
+    System.out.println("User typed length: " + currentTyped.length()); //output
+    System.out.println("Number of errors: " + computeLevenshteinDistance(currentTyped.trim(), currentPhrase.trim())); //trim whitespace and compute errors
+    System.out.println("Time taken on this trial: " + (millis()-lastTime)); //output
+    System.out.println("Time taken since beginning: " + (millis()-startTime)); //output
+    System.out.println("==================");
     lettersExpectedTotal+=currentPhrase.length();
     lettersEnteredTotal+=currentTyped.length();
     errorsTotal+=computeLevenshteinDistance(currentTyped.trim(), currentPhrase.trim());
@@ -419,19 +424,14 @@ void nextTrial()
   if (currTrialNum == totalTrialNum-1) //check to see if experiment just finished
   {
     finishTime = millis();
-    results += "================== \n Trials complete! \n" + "Total time taken: " + (finishTime - startTime) + "\n Total letters entered: " + lettersEnteredTotal
-    + "\n Total errors entered: " + errorsTotal + "\n WPM: " + (lettersEnteredTotal/5.0f)/((finishTime - startTime)/60000f)
-    + "\n ==================";
-    output.print("==================");
-    output.println("Trials complete!"); //output
-    output.println("Total time taken: " + (finishTime - startTime)); //output
-    output.println("Total letters entered: " + lettersEnteredTotal); //output
-    output.println("Total letters expected: " + lettersExpectedTotal); //output
-    output.println("Total errors entered: " + errorsTotal); //output
-    output.println("WPM: " + (lettersEnteredTotal/5.0f)/((finishTime - startTime)/60000f)); //output
-    output.println("==================");
-    output.flush();
-    output.close();
+    System.out.println("==================");
+    System.out.println("Trials complete!"); //output
+    System.out.println("Total time taken: " + (finishTime - startTime)); //output
+    System.out.println("Total letters entered: " + lettersEnteredTotal); //output
+    System.out.println("Total letters expected: " + lettersExpectedTotal); //output
+    System.out.println("Total errors entered: " + errorsTotal); //output
+    System.out.println("WPM: " + (lettersEnteredTotal/5.0f)/((finishTime - startTime)/60000f)); //output
+    System.out.println("==================");
     currTrialNum++; //increment by one so this mesage only appears once when all trials are done
     return;
   }
@@ -454,7 +454,7 @@ void nextTrial()
   //currentPhrase = "abc"; // uncomment this to override the test phrase (useful for debugging)
 }
 
-char getCharbyNum(char num)
+public char getCharbyNum(char num)
 {
   switch(num)
   {
@@ -623,7 +623,7 @@ public class Trie {
 
 
 //=========SHOULD NOT NEED TO TOUCH THIS METHOD AT ALL!==============
-int computeLevenshteinDistance(String phrase1, String phrase2) //this computers error between two strings
+public int computeLevenshteinDistance(String phrase1, String phrase2) //this computers error between two strings
 {
   int[][] distance = new int[phrase1.length() + 1][phrase2.length() + 1];
 
@@ -637,4 +637,14 @@ int computeLevenshteinDistance(String phrase1, String phrase2) //this computers 
       distance[i][j] = min(min(distance[i - 1][j] + 1, distance[i][j - 1] + 1), distance[i - 1][j - 1] + ((phrase1.charAt(i - 1) == phrase2.charAt(j - 1)) ? 0 : 1));
 
   return distance[phrase1.length()][phrase2.length()];
+}
+  public void settings() {  size(1080, 1920); }
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "TextEntryScaffold2" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
 }
