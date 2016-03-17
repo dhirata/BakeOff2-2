@@ -1,5 +1,8 @@
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Queue;
+import java.util.LinkedList;
+import java.util.ArrayList;
 
 String[] phrases; //contains all of the phrases
 int totalTrialNum = 4; //the total number of phrases to be tested - set this low for testing. Might be ~10 for the real bakeoff!
@@ -23,6 +26,8 @@ ArrayList <String> currentMatches = new ArrayList<String>();
 String[] dictionary;
 String currentWord = "";
 int lastSpace = 0;
+Trie t;
+int currentMatchLoc = 0;
 
 //You can modify anything in here. This is just a basic implementation.
 void setup()
@@ -33,7 +38,13 @@ void setup()
   orientation(PORTRAIT); //can also be LANDSCAPE -- sets orientation on android device
   size(960, 540); //Sets the size of the app. You may want to modify this to your device. Many phones today are 1080 wide by 1920 tall.
   textFont(createFont("Arial", 24)); //set the font to arial 24
-  noStroke(); //my code doesn't use any strokes.
+  //noStroke(); //my code doesn't use any strokes.
+  t = new Trie();
+  dictionary = loadStrings("dictionary.txt"); //load the dictionary set into memory
+  for(int i = 0; i < dictionary.length; i++)
+  {
+    t.insert(dictionary[i]); 
+  }
 }
 
 //You can modify anything in here. This is just a basic implementation.
@@ -147,58 +158,207 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 //***************************************************************
 void mousePressed()
 {
+  boolean addLetter = false;
   if(didMouseClick(margin, margin + sizeOfInputArea / 6, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18)) {
    /*
    PUT FUNCTIONALITY FOR qwert HERE!
    */
-   
+   currentWord += '2';
+        
+   addLetter = true;
   }
   if(didMouseClick(margin + sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18)) {
    /*
    PUT FUNCTIONALITY FOR yuiop HERE!
    */
-   
+   currentWord += '3';
+        
+   addLetter = true;
   }
   if(didMouseClick(margin, margin + sizeOfInputArea / 6  + sizeOfInputArea * 5 / 18, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18)) {
    /*
    PUT FUNCTIONALITY FOR asdf HERE!
    */
-   
+   currentWord += '4';
+        
+   addLetter = true;
   }
   if(didMouseClick(margin + sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6  + sizeOfInputArea * 5 / 18, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18)) {
    /*
    PUT FUNCTIONALITY FOR ghjkl HERE
    */
-   
+   currentWord += '5';
+        
+   addLetter = true;
   }
   if(didMouseClick(margin, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18, sizeOfInputArea * 3 /8, sizeOfInputArea * 5 / 18)) {
    /*
    PUT FUNCTIONALITY FOR zxcv HERE
    */
-   
+   currentWord += '6';
+        
+   addLetter = true;
   }
   if(didMouseClick(margin + sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18)) {
    /*
    PUT FUNCTIONALITY FOR bnm HERE
    */
-  
+    currentWord += '7';
+        
+    addLetter = true;
   }
   //Space Bar
   if(didMouseClick(margin + 2 * sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6, sizeOfInputArea / 4, sizeOfInputArea * 5 / 18)) {
      currentTyped += ' '; 
+     currentWord = "";
+     lastSpace = currentTyped.length() - 1;
   }
   //Delete key
   if(didMouseClick(margin + 2 * sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18, sizeOfInputArea / 4, sizeOfInputArea * 5 / 18)) {
      if(currentTyped.length() > 0) {
          currentTyped = currentTyped.substring(0, currentTyped.length() - 1);
+         boolean foundSpace = false;
+         for(int j = currentTyped.length()-1; j >= 0; j--)
+          {
+            if(currentTyped.charAt(j) == ' ')
+            {
+              lastSpace = j;
+              foundSpace = true;
+              break; 
+            }
+          }
+          if(!foundSpace)
+          {
+            lastSpace = 0;
+            currentWord = currentTyped.substring(0,currentTyped.length());
+          }
+          else
+          {
+            currentWord = currentTyped.substring(lastSpace+1,currentTyped.length());
+          }
+          currentWord = convertLetterstoNumbers(currentWord);
      }
+     else
+        {
+          currentTyped = "";
+          currentWord = "";
+          lastSpace = 0;
+        }
   }
-  
+  if(addLetter)
+      {
+        System.out.println(lastSpace);
+        if(lastSpace > 0)
+        {
+          currentTyped = currentTyped.substring(0, lastSpace+1);
+          System.out.println("****"+currentTyped+"****     ****"+currentWord+"****");
+        }
+        else
+        {
+          currentTyped = "";
+        }
+        currentMatches = checkWord(currentWord);
+        currentMatchLoc = 0;
+        currentTyped += currentMatches.get(0);
+      }
   //You are allowed to have a next button outside the 2" area
   if (didMouseClick(350, 00, 150, 60)) //check if click is in next button
   {
     nextTrial(); //if so, advance to next trial
   }
+  
+  
+}
+
+//THIS IS THE AUTOCOMPLETE STUFF
+ArrayList <String> checkWord(String currentWord)
+{
+  currentWord = currentWord.trim();
+  ArrayList <String> word = t.bfs_search(currentWord);
+  if(word != null && word.size() > 0)
+  {
+    return word;
+  }
+  else
+  {
+    
+    for(int i = currentWord.length(); i >=0 ; i--)
+    {
+      word = t.bfs_search(currentWord.substring(0,i));
+      if(word != null && word.size() > 0)
+      {
+        System.out.println(word.get(0));
+        for(int j = i; j < currentWord.length(); j++)
+        {
+          for(int k = 0; k < word.size(); k++)
+          {
+            int loc = currentWord.length()-j-1;
+            word.set(k, word.get(k)+ getCharbyNum(currentWord.charAt(currentWord.length()-loc-1)));
+          }
+        }
+        return word;
+      }
+    }
+    
+    word.add("");
+    for(int j = 0; j < currentWord.length(); j++)
+    {
+      word.set(0, word.get(0) + getCharbyNum(currentWord.charAt(currentWord.length()-j-1)));
+    }
+    return word;
+  }
+}
+
+String convertLetterstoNumbers(String word)
+{
+  String val = "";
+  System.out.println(word);
+  for(int i = 0; i < word.length(); i++)
+  {
+    System.out.println(word.charAt(i)+"    "+convertCharacterToNum(word.charAt(i)));
+    val += convertCharacterToNum(word.charAt(i));
+  }
+  return val; 
+}
+
+char convertCharacterToNum(char letter)
+{
+  switch(letter)
+  {
+    case 'q':
+    case 'w':
+    case 'e':
+    case 'r':
+    case 't':
+      return '2';
+    case 'y':
+    case 'u':
+    case 'i':
+    case 'o':
+    case 'p':
+      return '3';
+    case 'a':
+    case 's':
+    case 'd':
+    case 'f':
+      return '4';
+    case 'g':
+    case 'h':
+    case 'j':
+    case 'k':
+    case 'l':
+      return '5';
+    case 'z':
+    case 'x':
+    case 'c':
+    case 'v':
+      return '6';
+    case 'b':
+    case 'n':
+    case 'm':
+      return '7';
+  }
+  return ' ';
 }
 
 
@@ -251,10 +411,177 @@ void nextTrial()
 
   lastTime = millis(); //record the time of when this trial ended
   currentTyped = ""; //clear what is currently typed preparing for next trial
+  currentWord = "";
+  lastSpace = 0;
   currentPhrase = phrases[currTrialNum]; // load the next phrase!
   //currentPhrase = "abc"; // uncomment this to override the test phrase (useful for debugging)
 }
 
+char getCharbyNum(char num)
+{
+  switch(num)
+  {
+    case '2':
+      return 'e';
+    case '3':
+      return 'i';
+    case '4':
+      return 'a';
+    case '5':
+      return 'g';
+    case '6':
+      return 'c';
+    case '7':
+      return 'b';
+  }
+  return ' ';
+}
+
+public class Trie {
+  
+  private final int R = 26;  // the trie branches 
+  private Node root = new Node(); // the root node
+  
+  // the t9 mapped array which maps number to string on the typing board
+  private String[] t9 = {"", "", "qwert", "yuiop", "asdf", "ghjkl", "zxcv", "bnm"};
+  
+  // trie node definition
+  private class Node {
+    private boolean isWord;
+    private Node[] next;
+    
+    public Node() {
+      this(false);
+    }
+    
+    public Node(boolean isWord) {
+      this.isWord = isWord;
+      this.next = new Node[R];
+    }
+  }
+  
+  // insert a word to the trie
+  public void insert(String s) {
+    Node current = root;
+    
+    for(int i = 0; i < s.length(); i++) {
+      if(current.next[s.charAt(i) - 'a'] == null) {
+        Node n = new Node();
+        current.next[s.charAt(i) - 'a'] = n;
+      } 
+      
+      current = current.next[s.charAt(i) - 'a'];
+    }
+    
+    current.isWord = true;
+  }
+  
+  // insert a character to some node
+  public void insert(Node current, char c) {
+    if(current.next[c - 'a'] == null) {
+      Node node = new Node();
+      current.next[c - 'a'] = node;
+    }
+    current = current.next[c - 'a'];
+  }
+  
+  // search a word in the trie
+  public boolean search(String s) {
+    Node current = root;
+    
+    for(int i = 0; i < s.length(); i++) {
+      if(current.next[s.charAt(i) - 'a'] == null) {
+        return false;
+      } 
+      current = current.next[s.charAt(i) - 'a'];
+    }
+    
+    return current.isWord == true;
+  }
+  
+  // search a word in the trie
+  public boolean searchForPartial(String s) {
+    Node current = root;
+    
+    for(int i = 0; i < s.length(); i++) {
+      if(current.next[s.charAt(i) - 'a'] == null) {
+        return false;
+      } 
+      current = current.next[s.charAt(i) - 'a'];
+    }
+    
+    return true;
+  }
+  
+  // breadth first search for a number string use queue
+  public ArrayList <String> bfs_search(String strNum) {
+    Queue<String> q = new LinkedList<String>();
+    ArrayList <String> matches = new ArrayList <String> ();
+    
+    q.add("");
+    
+    for(int i = 0; i < strNum.length(); i++) {
+      String keyStr = t9[strNum.charAt(i) - '0'];
+      int len = q.size();
+      
+      while(len -- > 0) {
+        String preStr = q.remove();
+        for(int j = 0; j < keyStr.length(); j++) {
+          String tmpStr = preStr + keyStr.charAt(j);
+          //q.add(tmpStr);
+          if(tmpStr.length() == strNum.length() && search(tmpStr)) {
+            matches.add(tmpStr);
+          } else {
+            if(searchForPartial(tmpStr))
+            {
+              q.add(tmpStr);
+            }
+          }
+        }
+      }
+    }
+    return matches;
+  }
+  
+  // delete a node
+  public void delete(Node node) {
+    for(int i = 0; i < R; i++) {
+      if(node.next != null) {
+        delete(node.next[i]);
+      }
+    }
+    node = null;
+  }
+  
+  // print words
+  public void print(Node node) {
+    if(node == null) return;
+    for(int i = 0; i < R; i++) {
+      if(node.next[i] != null) {
+        System.out.print((char) (97 + i));
+        if(node.next[i].isWord == true) {
+          System.out.println();
+        }
+        print(node.next[i]);
+      }
+      
+    }
+  }
+  
+  // print words from root
+  public void print() {
+    print(root);
+  }
+  
+  // convert number string to String array
+  private String[] numToString(String strNum) {
+    String[] strArray = new String[strNum.length()];
+    for(int i = 0; i < strNum.length(); i++) {
+      strArray[i] = t9[strNum.charAt(i) - '0'];
+    }
+    return strArray;
+  }
+}
 
 
 
