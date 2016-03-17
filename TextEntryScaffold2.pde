@@ -134,13 +134,13 @@ void draw()
     //Dont try to understand this
     fill(64);
     textAlign(CENTER);
-    text("qwert", margin + sizeOfInputArea * 3 / 8 / 2, margin  + sizeOfInputArea / 6 + sizeOfInputArea * 1 / 5);
-    text("yuiop", margin + sizeOfInputArea * 3 / 8 + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6 + sizeOfInputArea * 1 / 5);
-    text("asdf", margin + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6  + sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
-    text("ghjkl", margin + sizeOfInputArea * 3 / 8 + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6  + sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
-    text("zxcv", margin + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
-    text("bnm", margin + sizeOfInputArea * 3 / 8 + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
-    text("_", margin + 2 * sizeOfInputArea * 3 / 8 + sizeOfInputArea / 4 / 2, margin + sizeOfInputArea * 1 / 5);
+    text("QWERT", margin + sizeOfInputArea * 3 / 8 / 2, margin  + sizeOfInputArea / 6 + sizeOfInputArea * 1 / 5);
+    text("YUIOP", margin + sizeOfInputArea * 3 / 8 + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6 + sizeOfInputArea * 1 / 5);
+    text("ASDF", margin + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6  + sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
+    text("GHJKL", margin + sizeOfInputArea * 3 / 8 + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6  + sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
+    text("ZXCV", margin + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
+    text("BNM", margin + sizeOfInputArea * 3 / 8 + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
+    text("_", margin + 2 * sizeOfInputArea * 3 / 8 + sizeOfInputArea / 4 / 2, margin + sizeOfInputArea / 6 + sizeOfInputArea * 1 / 5);
     text("<", margin + 2 * sizeOfInputArea * 3 / 8 + sizeOfInputArea / 4 / 2, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
     
     
