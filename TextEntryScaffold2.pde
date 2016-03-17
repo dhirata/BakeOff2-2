@@ -84,7 +84,7 @@ void draw()
     text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
     fill(255);
     text("Target:   " + currentPhrase, 70, 100); //draw the target string
-    text("Entered:  " + currentTyped, 70, 140); //draw what the user has entered thus far 
+    text("Entered:  " + currentTyped + "|", 70, 140); //draw what the user has entered thus far 
     fill(255, 0, 0);
     rect(350, 00, 150, 60); //drag next button
     fill(255);
