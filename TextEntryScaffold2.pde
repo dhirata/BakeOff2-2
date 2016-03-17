@@ -28,6 +28,7 @@ String currentWord = "";
 int lastSpace = 0;
 Trie t;
 int currentMatchLoc = 0;
+int optIndex = 0;
 
 //You can modify anything in here. This is just a basic implementation.
 void setup()
@@ -95,56 +96,59 @@ void draw()
     //Hitboxes
     fill(128);
     //Top Key Hitboxes
-    rect(margin, margin + sizeOfInputArea / 6, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18);
-    rect(margin + sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18);
+    rect(margin, margin, sizeOfInputArea * 3 / 8, sizeOfInputArea / 3);
+    rect(margin + sizeOfInputArea * 3 / 8, margin, sizeOfInputArea * 3 / 8, sizeOfInputArea/ 3);
     
     //Middle Key Hitboxes
-    rect(margin, margin + sizeOfInputArea / 6  + sizeOfInputArea * 5 / 18, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18);
-    rect(margin + sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6  + sizeOfInputArea * 5 / 18, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18);
+    rect(margin, margin + sizeOfInputArea / 3, sizeOfInputArea * 3 / 8, sizeOfInputArea/ 3);
+    rect(margin + sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 3, sizeOfInputArea * 3 / 8, sizeOfInputArea / 3);
     
     //Bottom Key Hitboxes
-    rect(margin, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18, sizeOfInputArea * 3 /8, sizeOfInputArea * 5 / 18);
-    rect(margin + sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18);
+    rect(margin, margin + 2 * sizeOfInputArea / 3, sizeOfInputArea * 3 /8, sizeOfInputArea / 3);
+    rect(margin + sizeOfInputArea * 3 / 8, margin + 2 * sizeOfInputArea / 3, sizeOfInputArea * 3 / 8, sizeOfInputArea / 3);
 
-    //Space key hitbox
-    rect(margin + 2 * sizeOfInputArea * 3 / 8, margin + sizeOfInputArea * 5 / 18 + sizeOfInputArea / 6, sizeOfInputArea / 4, sizeOfInputArea * 5 / 18);
+    //next word key hitbox
+    rect(margin + 2 * sizeOfInputArea * 3 / 8, margin, sizeOfInputArea / 4, sizeOfInputArea / 3);
+    
+    //space key hitbox
+    rect(margin + 2 * sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 3, sizeOfInputArea / 4, sizeOfInputArea / 3);
     
     //Delete key hitbox
-    rect(margin + 2 * sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18, sizeOfInputArea / 4, sizeOfInputArea * 5 / 18);
+    rect(margin + 2 * sizeOfInputArea * 3 / 8, margin + 2 * sizeOfInputArea / 3, sizeOfInputArea / 4, sizeOfInputArea / 3);
     
     
     //Overlays
     fill(255);
     //Top keys
-    rect(margin + 3, margin + sizeOfInputArea / 6 + 3, sizeOfInputArea * 3 / 8 - 6, sizeOfInputArea * 5 / 18 - 6, 7);
-    rect(margin + sizeOfInputArea * 3 / 8 + 3, margin + sizeOfInputArea / 6 + 3, sizeOfInputArea * 3 / 8 - 6, sizeOfInputArea * 5 / 18 - 6, 7);
+    rect(margin + 3, margin + 3, sizeOfInputArea * 3 / 8 - 6, sizeOfInputArea / 3 - 6, 7);
+    rect(margin + sizeOfInputArea * 3 / 8 + 3, margin + 3, sizeOfInputArea * 3 / 8 - 6, sizeOfInputArea / 3 - 6, 7);
     //middle
-    rect(margin + 3, margin + sizeOfInputArea / 6  + sizeOfInputArea * 5 / 18 + 3, sizeOfInputArea * 3 / 8 - 6, sizeOfInputArea * 5 / 18 - 6, 7);
-    rect(margin + sizeOfInputArea * 3 / 8 + 3, margin + sizeOfInputArea / 6  + sizeOfInputArea * 5 / 18 + 3, sizeOfInputArea * 3 / 8 - 6, sizeOfInputArea * 5 / 18 - 6, 7);
+    rect(margin + 3, margin + sizeOfInputArea / 3 + 3, sizeOfInputArea * 3 / 8 - 6, sizeOfInputArea / 3 - 6, 7);
+    rect(margin + sizeOfInputArea * 3 / 8 + 3, margin + sizeOfInputArea / 3 + 3, sizeOfInputArea * 3 / 8 - 6, sizeOfInputArea / 3 - 6, 7);
     //bottom
-    rect(margin + 3, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + 3, sizeOfInputArea * 3 /8 - 6, sizeOfInputArea * 5 / 18 - 6, 7);
-    rect(margin + sizeOfInputArea * 3 / 8 + 3, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + 3, sizeOfInputArea * 3 / 8 - 6, sizeOfInputArea * 5 / 18 - 6, 7);
+    rect(margin + 3, margin + 2 * sizeOfInputArea / 3 + 3, sizeOfInputArea * 3 /8 - 6, sizeOfInputArea / 3 - 6, 7);
+    rect(margin + sizeOfInputArea * 3 / 8 + 3, margin + 2 * sizeOfInputArea / 3 + 3, sizeOfInputArea * 3 / 8 - 6, sizeOfInputArea / 3 - 6, 7);
+    //next word
+    rect(margin + 2 * sizeOfInputArea * 3 / 8 + 3, margin + 3, sizeOfInputArea / 4 - 6, sizeOfInputArea / 3 - 6, 7);
     //space
-    rect(margin + 2 * sizeOfInputArea * 3 / 8 + 3, margin + sizeOfInputArea / 6 + sizeOfInputArea * 5 / 18  + 3, sizeOfInputArea / 4 - 6, sizeOfInputArea * 5 / 18 - 6, 7);
+    rect(margin + 2 * sizeOfInputArea * 3 / 8 + 3, margin + sizeOfInputArea / 3 + 3, sizeOfInputArea / 4 - 6, sizeOfInputArea / 3 - 6, 7);
     //delete
-    rect(margin + 2 * sizeOfInputArea * 3 / 8 + 3, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + 3, sizeOfInputArea / 4 - 6, sizeOfInputArea * 5 / 18 - 6, 7);
+    rect(margin + 2 * sizeOfInputArea * 3 / 8 + 3, margin + 2 * sizeOfInputArea / 3 + 3, sizeOfInputArea / 4 - 6, sizeOfInputArea / 3 - 6, 7);
     
     
     //letters
     //Dont try to understand this
     fill(64);
     textAlign(CENTER);
-    text("QWERT", margin + sizeOfInputArea * 3 / 8 / 2, margin  + sizeOfInputArea / 6 + sizeOfInputArea * 1 / 5);
-    text("YUIOP", margin + sizeOfInputArea * 3 / 8 + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6 + sizeOfInputArea * 1 / 5);
-    text("ASDF", margin + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6  + sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
-    text("GHJKL", margin + sizeOfInputArea * 3 / 8 + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6  + sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
-    text("ZXCV", margin + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
-    text("BNM", margin + sizeOfInputArea * 3 / 8 + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
-    text("_", margin + 2 * sizeOfInputArea * 3 / 8 + sizeOfInputArea / 4 / 2, margin + sizeOfInputArea / 6 + sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
-    text("<", margin + 2 * sizeOfInputArea * 3 / 8 + sizeOfInputArea / 4 / 2, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18 + sizeOfInputArea * 1 / 5);
-    
-    System.out.println(currentMatches);
-    
+    text("QWERT", margin + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea * 1 / 5);
+    text("YUIOP", margin + sizeOfInputArea * 3 / 8 + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea * 1 / 5);
+    text("ASDF", margin + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 3 + sizeOfInputArea * 1 / 5);
+    text("GHJKL", margin + sizeOfInputArea * 3 / 8 + sizeOfInputArea * 3 / 8 / 2, margin + sizeOfInputArea / 3 + sizeOfInputArea * 1 / 5);
+    text("ZXCV", margin + sizeOfInputArea * 3 / 8 / 2, margin + 2 * sizeOfInputArea / 3 + sizeOfInputArea * 1 / 5);
+    text("BNM", margin + sizeOfInputArea * 3 / 8 + sizeOfInputArea * 3 / 8 / 2, margin + 2 * sizeOfInputArea / 3 + sizeOfInputArea * 1 / 5);
+    text("->", margin + 2 * sizeOfInputArea * 3 / 8 + sizeOfInputArea / 4 / 2, margin + sizeOfInputArea * 1 / 5);
+    text("_", margin + 2 * sizeOfInputArea * 3 / 8 + sizeOfInputArea / 4 / 2, margin + sizeOfInputArea / 3 + sizeOfInputArea * 1 / 5); 
+    text("<", margin + 2 * sizeOfInputArea * 3 / 8 + sizeOfInputArea / 4 / 2, margin + 2 * sizeOfInputArea / 3 + sizeOfInputArea * 1 / 5);    
   }
   
 }
@@ -160,7 +164,7 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 void mousePressed()
 {
   boolean addLetter = false;
-  if(didMouseClick(margin, margin + sizeOfInputArea / 6, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18)) {
+  if(didMouseClick(margin, margin, sizeOfInputArea * 3 / 8, sizeOfInputArea / 3)) {
    /*
    PUT FUNCTIONALITY FOR qwert HERE!
    */
@@ -168,7 +172,7 @@ void mousePressed()
         
    addLetter = true;
   }
-  if(didMouseClick(margin + sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18)) {
+  if(didMouseClick(margin + sizeOfInputArea * 3 / 8, margin, sizeOfInputArea * 3 / 8, sizeOfInputArea/ 3)) {
    /*
    PUT FUNCTIONALITY FOR yuiop HERE!
    */
@@ -176,7 +180,7 @@ void mousePressed()
         
    addLetter = true;
   }
-  if(didMouseClick(margin, margin + sizeOfInputArea / 6  + sizeOfInputArea * 5 / 18, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18)) {
+  if(didMouseClick(margin, margin + sizeOfInputArea / 3, sizeOfInputArea * 3 / 8, sizeOfInputArea/ 3)) {
    /*
    PUT FUNCTIONALITY FOR asdf HERE!
    */
@@ -184,7 +188,7 @@ void mousePressed()
         
    addLetter = true;
   }
-  if(didMouseClick(margin + sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6  + sizeOfInputArea * 5 / 18, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18)) {
+  if(didMouseClick(margin + sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 3, sizeOfInputArea * 3 / 8, sizeOfInputArea / 3)) {
    /*
    PUT FUNCTIONALITY FOR ghjkl HERE
    */
@@ -192,7 +196,7 @@ void mousePressed()
         
    addLetter = true;
   }
-  if(didMouseClick(margin, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18, sizeOfInputArea * 3 /8, sizeOfInputArea * 5 / 18)) {
+  if(didMouseClick(margin, margin + 2 * sizeOfInputArea / 3, sizeOfInputArea * 3 /8, sizeOfInputArea / 3)) {
    /*
    PUT FUNCTIONALITY FOR zxcv HERE
    */
@@ -200,7 +204,7 @@ void mousePressed()
         
    addLetter = true;
   }
-  if(didMouseClick(margin + sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18, sizeOfInputArea * 3 / 8, sizeOfInputArea * 5 / 18)) {
+  if(didMouseClick(margin + sizeOfInputArea * 3 / 8, margin + 2 * sizeOfInputArea / 3, sizeOfInputArea * 3 / 8, sizeOfInputArea / 3)) {
    /*
    PUT FUNCTIONALITY FOR bnm HERE
    */
@@ -208,14 +212,20 @@ void mousePressed()
         
     addLetter = true;
   }
-  //Space Bar
-  if(didMouseClick(margin + 2 * sizeOfInputArea * 3 / 8, margin + sizeOfInputArea * 5 / 18 + sizeOfInputArea / 6, sizeOfInputArea / 4, sizeOfInputArea * 5 / 18)) {
+  //Next word 
+  if(didMouseClick(margin + 2 * sizeOfInputArea * 3 / 8, margin, sizeOfInputArea / 4, sizeOfInputArea / 3)) {
+     currentMatchLoc++;
+     addLetter = true;
+  }
+  //space bar
+  if(didMouseClick(margin + 2 * sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 3, sizeOfInputArea / 4, sizeOfInputArea / 3)) {
      currentTyped += ' '; 
      currentWord = "";
      lastSpace = currentTyped.length() - 1;
+     currentMatchLoc = 0;
   }
   //Delete key
-  if(didMouseClick(margin + 2 * sizeOfInputArea * 3 / 8, margin + sizeOfInputArea / 6  + 2 * sizeOfInputArea * 5 / 18, sizeOfInputArea / 4, sizeOfInputArea * 5 / 18)) {
+  if(didMouseClick(margin + 2 * sizeOfInputArea * 3 / 8, margin + 2 * sizeOfInputArea / 3, sizeOfInputArea / 4, sizeOfInputArea / 3)) {
      if(currentTyped.length() > 0) {
          currentTyped = currentTyped.substring(0, currentTyped.length() - 1);
          boolean foundSpace = false;
@@ -238,12 +248,14 @@ void mousePressed()
             currentWord = currentTyped.substring(lastSpace+1,currentTyped.length());
           }
           currentWord = convertLetterstoNumbers(currentWord);
+          currentMatchLoc = 0;
      }
      else
         {
           currentTyped = "";
           currentWord = "";
           lastSpace = 0;
+          currentMatchLoc = 0;
         }
   }
   if(addLetter)
@@ -259,8 +271,8 @@ void mousePressed()
           currentTyped = "";
         }
         currentMatches = checkWord(currentWord);
-        currentMatchLoc = 0;
-        currentTyped += currentMatches.get(0);
+        //currentMatchLoc = 0;
+        currentTyped += currentMatches.get(currentMatchLoc % currentMatches.size());
       }
   //You are allowed to have a next button outside the 2" area
   if (didMouseClick(350, 00, 150, 60)) //check if click is in next button
